@@ -178,10 +178,13 @@ body::after {
     display: flex;
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-sm);
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 #taskInput {
-    flex: 1;
+    flex: 2;
+    min-width: 200px;
     padding: var(--spacing-md);
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: var(--radius-md);
@@ -192,12 +195,33 @@ body::after {
     backdrop-filter: blur(5px);
 }
 
+#taskDeadline {
+    flex: 1;
+    min-width: 180px;
+    padding: var(--spacing-md);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    transition: all var(--transition-fast);
+    background: rgba(255, 255, 255, 0.9);
+    color: #111827;
+    backdrop-filter: blur(5px);
+    font-family: inherit;
+}
+
 #taskInput:focus {
     outline: none;
     border-color: rgba(255, 255, 255, 0.6);
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.95);
     color: #111827;
+}
+
+#taskDeadline:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.95);
 }
 
 #taskInput::placeholder {

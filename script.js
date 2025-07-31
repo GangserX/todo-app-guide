@@ -15,6 +15,7 @@ class TodoApp {
         // DOM elements
         this.elements = {
             taskInput: document.getElementById('taskInput'),
+            taskDeadline: document.getElementById('taskDeadline'),
             addBtn: document.getElementById('addBtn'),
             taskList: document.getElementById('taskList'),
             taskCount: document.getElementById('taskCount'),
@@ -204,6 +205,7 @@ class TodoApp {
      */
     addTask() {
         const text = this.elements.taskInput.value.trim();
+        const deadline = this.elements.taskDeadline.value;
         
         if (!this.validateTaskInput(text)) {
             return;
@@ -214,11 +216,13 @@ class TodoApp {
             text: text,
             completed: false,
             createdAt: new Date().toISOString(),
-            completedAt: null
+            completedAt: null,
+            deadline: deadline || null
         };
         
         this.tasks.push(task);
         this.elements.taskInput.value = '';
+        this.elements.taskDeadline.value = '';
         this.clearError();
         this.saveTasks();
         this.render();
@@ -535,11 +539,15 @@ class TodoApp {
         taskElement.dataset.taskId = taskId;
         taskElement.setAttribute('role', 'listitem');
         
+        // Format deadline display
+        const deadlineHTML = task.deadline ? this.formatDeadlineDisplay(task.deadline, task.completed) : '';
+        
         if (isEditing) {
             taskElement.innerHTML = `
                 <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} disabled>
                 <div class="task-content">
                     <input type="text" class="task-edit-input" value="${this.escapeHtml(task.text)}" maxlength="100">
+                    ${deadlineHTML}
                     <div class="task-actions">
                         <button class="task-btn save-btn" aria-label="Save task">Save</button>
                         <button class="task-btn cancel-btn" aria-label="Cancel edit">Cancel</button>
@@ -551,6 +559,7 @@ class TodoApp {
                 <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''} aria-label="Mark task as ${task.completed ? 'incomplete' : 'complete'}">
                 <div class="task-content">
                     <span class="task-text ${task.completed ? 'completed' : ''}" title="Double-click to edit">${this.escapeHtml(task.text)}</span>
+                    ${deadlineHTML}
                     <div class="task-actions">
                         <button class="task-btn edit-btn" aria-label="Edit task">Edit</button>
                         <button class="task-btn delete-btn" aria-label="Delete task">Delete</button>
@@ -655,7 +664,45 @@ class TodoApp {
                 return true;
         }
     }
-    
+
+    /**
+     * Format deadline display for tasks
+     */
+    formatDeadlineDisplay(deadline, isCompleted) {
+        if (!deadline) return '';
+        
+        const deadlineDate = new Date(deadline);
+        const now = new Date();
+        const isOverdue = deadlineDate < now && !isCompleted;
+        const timeDiff = deadlineDate.getTime() - now.getTime();
+        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        
+        const formattedDate = deadlineDate.toLocaleString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        let statusClass = 'task-deadline';
+        let statusText = '';
+        
+        if (isCompleted) {
+            statusClass += ' completed';
+            statusText = '✓ ';
+        } else if (isOverdue) {
+            statusClass += ' overdue';
+            statusText = '⚠️ Overdue: ';
+        } else if (daysDiff <= 1) {
+            statusClass += ' urgent';
+            statusText = '🔥 Due soon: ';
+        } else {
+            statusText = '📅 Due: ';
+        }
+        
+        return `<div class="${statusClass}">${statusText}${formattedDate}</div>`;
+    }
+
     /**
      * Escape HTML to prevent XSS
      */
@@ -663,9 +710,7 @@ class TodoApp {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
-    }
-    
-    /**
+    }    /**
      * Save tasks to localStorage
      */
     saveTasks() {
