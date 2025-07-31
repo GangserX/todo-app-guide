@@ -171,9 +171,20 @@ body::after {
 
 /* Header Styles */
 .app-header {
-    text-align: center;
     margin-bottom: var(--spacing-2xl);
     position: relative;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.header-text {
+    text-align: center;
+    flex: 1;
 }
 
 .app-header h1 {
@@ -188,9 +199,40 @@ body::after {
 }
 
 .subtitle {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-on-glass);
     font-size: var(--font-size-lg);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.theme-icon {
+    transition: transform var(--transition-fast);
+}
+
+.theme-toggle:hover .theme-icon {
+    transform: rotate(15deg);
 }
 
 /* Main Content */
@@ -203,14 +245,15 @@ body::after {
 
 /* Input Section */
 .input-section {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 var(--glass-border);
+    border: 1px solid var(--glass-border);
+    transition: all var(--transition-normal);
 }
 
 .input-container {
@@ -225,12 +268,12 @@ body::after {
     flex: 2;
     min-width: 200px;
     padding: var(--spacing-md);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid var(--glass-border);
     border-radius: var(--radius-md);
     font-size: var(--font-size-base);
     transition: all var(--transition-fast);
-    background: rgba(255, 255, 255, 0.9);
-    color: #111827;
+    background: var(--input-bg);
+    color: var(--input-text);
     backdrop-filter: blur(5px);
 }
 
@@ -238,12 +281,12 @@ body::after {
     flex: 1;
     min-width: 180px;
     padding: var(--spacing-md);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid var(--glass-border);
     border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
     transition: all var(--transition-fast);
-    background: rgba(255, 255, 255, 0.9);
-    color: #111827;
+    background: var(--input-bg);
+    color: var(--input-text);
     backdrop-filter: blur(5px);
     font-family: inherit;
 }
@@ -269,9 +312,9 @@ body::after {
 
 .add-btn {
     padding: var(--spacing-md) var(--spacing-lg);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-    color: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: var(--gradient-secondary);
+    color: var(--input-text);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     font-size: var(--font-size-base);
     font-weight: 600;
@@ -322,19 +365,20 @@ body::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 var(--glass-border);
+    border: 1px solid var(--glass-border);
+    transition: all var(--transition-normal);
 }
 
 .task-counter {
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-on-glass);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -368,15 +412,16 @@ body::after {
 
 /* Tasks Section */
 .tasks-section {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
     border-radius: var(--radius-lg);
     box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+        inset 0 1px 0 var(--glass-border);
+    border: 1px solid var(--glass-border);
     min-height: 300px;
     position: relative;
+    transition: all var(--transition-normal);
 }
 
 .task-list {
@@ -389,10 +434,10 @@ body::after {
     display: flex;
     align-items: center;
     padding: var(--spacing-lg);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid var(--glass-border);
     transition: all var(--transition-fast);
     background: transparent;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-on-glass);
 }
 
 .task-item:last-child {
@@ -400,7 +445,7 @@ body::after {
 }
 
 .task-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
     backdrop-filter: blur(5px);
 }
 
@@ -692,9 +737,9 @@ body::after {
 .app-footer {
     text-align: center;
     padding: var(--spacing-lg) 0;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-on-glass);
     font-size: var(--font-size-sm);
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid var(--glass-border);
     margin-top: var(--spacing-xl);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
@@ -821,30 +866,5 @@ body::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --text-primary: #f9fafb;
-        --text-secondary: #d1d5db;
-        --text-muted: #9ca3af;
-        
-        --bg-primary: #1f2937;
-        --bg-secondary: #111827;
-        --bg-tertiary: #374151;
-        --border-color: #374151;
-    }
-    
-    body {
-        background: linear-gradient(135deg, #1e3a8a 0%, #581c87 100%);
-    }
-    
-    body::before {
-        background-image: 
-            radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.2) 0%, transparent 50%);
     }
 }

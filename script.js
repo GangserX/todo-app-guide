@@ -28,8 +28,12 @@ class TodoApp {
             confirmYes: document.getElementById('confirmYes'),
             confirmNo: document.getElementById('confirmNo'),
             modalTitle: document.getElementById('modalTitle'),
-            modalMessage: document.getElementById('modalMessage')
+            modalMessage: document.getElementById('modalMessage'),
+            themeToggle: document.getElementById('themeToggle')
         };
+        
+        // Theme state
+        this.currentTheme = this.getStoredTheme() || 'light';
         
         // Pending confirmation action
         this.pendingAction = null;
@@ -42,6 +46,7 @@ class TodoApp {
      * Initialize the application
      */
     init() {
+        this.initTheme();
         this.loadTasks();
         this.bindEvents();
         this.render();
@@ -66,6 +71,11 @@ class TodoApp {
         // Add button
         this.elements.addBtn.addEventListener('click', () => {
             this.addTask();
+        });
+        
+        // Theme toggle
+        this.elements.themeToggle.addEventListener('click', () => {
+            this.toggleTheme();
         });
         
         // Task list events (using event delegation)
@@ -785,6 +795,66 @@ class TodoApp {
             active,
             completionRate: total > 0 ? Math.round((completed / total) * 100) : 0
         };
+    }
+    
+    /**
+     * Initialize theme
+     */
+    initTheme() {
+        this.setTheme(this.currentTheme);
+    }
+    
+    /**
+     * Get stored theme from localStorage
+     */
+    getStoredTheme() {
+        try {
+            return localStorage.getItem('todoapp-theme');
+        } catch (error) {
+            console.error('Failed to get stored theme:', error);
+            return null;
+        }
+    }
+    
+    /**
+     * Store theme in localStorage
+     */
+    storeTheme(theme) {
+        try {
+            localStorage.setItem('todoapp-theme', theme);
+        } catch (error) {
+            console.error('Failed to store theme:', error);
+        }
+    }
+    
+    /**
+     * Set theme
+     */
+    setTheme(theme) {
+        this.currentTheme = theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Update theme toggle icon
+        const themeIcon = this.elements.themeToggle.querySelector('.theme-icon');
+        if (themeIcon) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+        
+        this.storeTheme(theme);
+    }
+    
+    /**
+     * Toggle theme
+     */
+    toggleTheme() {
+        const newTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        this.setTheme(newTheme);
+        
+        // Add visual feedback
+        this.elements.themeToggle.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            this.elements.themeToggle.style.transform = '';
+        }, 150);
     }
 }
 
